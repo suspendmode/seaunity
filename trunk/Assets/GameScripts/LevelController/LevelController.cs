@@ -22,7 +22,7 @@ public class LevelController : AIControllerBase
 	}
 	void Start()
 	{
-		gameObject.SendMessage(mLevelData.WelcomeEvent);
+		GlobalMethods.SendMessage(gameObject, mLevelData.WelcomeEvent);
 	}
 	
 	void TryStrategyMode()

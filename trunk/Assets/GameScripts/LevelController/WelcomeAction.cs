@@ -13,8 +13,7 @@ public class WelcomeAction : ActionBase
 	public GUISkin skin	= null;
 	private bool mShowMe = false;
 	
-	
-    public void DisplayWelcome ()
+	public void DisplayWelcome ()
 	{
 		mShowMe = true;
 	}
@@ -45,13 +44,13 @@ public class WelcomeAction : ActionBase
 			if (GUI.Button(new Rect(100f, rect.height - 80f, 200f, 30f), "Try Strategy Mode", skin.button))
 			{
 				mShowMe = false;
-				gameObject.SendMessage("TryStrategyMode");
+				GlobalMethods.SendMessage(gameObject, "TryStrategyMode");
 			}
 
 			if (GUI.Button(new Rect(100f, rect.height - 40f, 200f, 30f), "Try Exploration Mode", skin.button))
 			{
 				mShowMe = false;
-				gameObject.SendMessage("TryExplorationMode");
+				GlobalMethods.SendMessage(gameObject, "TryExplorationMode");
 			}
 		}
 		GUILayout.EndArea();

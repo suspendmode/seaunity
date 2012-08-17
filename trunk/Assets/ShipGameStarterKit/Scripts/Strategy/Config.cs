@@ -107,7 +107,7 @@ public class Config : MonoBehaviour
 		}
 	}
 
-	void DisplayWelcome ()
+	/*void DisplayWelcome ()
 	{
 		Rect rect = UI.DrawWindow(new Rect(Screen.width * 0.5f - 200f, Screen.height * 0.5f - 220f, 400f, 440f), "Welcome");
 
@@ -142,5 +142,5 @@ public class Config : MonoBehaviour
 			}
 		}
 		GUILayout.EndArea();
-	}
+	}*/
 }
