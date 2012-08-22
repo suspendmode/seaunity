@@ -13,7 +13,9 @@ public class SteerWheelController : AIControllerBase
 	public float mPowerPerRound = 1f;
 	public float mMaxAngle = 720.0f;
 	public float mMinAngle = -720.0f;
+	public float mMaxRotationSpeed = 1500f;
 	public float mSlowAcc = 500f;
+	public float mRewindAcc = 500f;
 	
 	private Vector3 mCenter = Vector3.zero;
 	private float mTotalAngle = 0.0f;
@@ -21,7 +23,10 @@ public class SteerWheelController : AIControllerBase
 	private float mCurrentSpeed = 0.0f;
 	private DragMessage mLastMessage = null;
 	private bool mLeavingSteerPositive = false;
-		
+	private float mRewindAngle = 0f;
+	private float mRewindTime = 0f;
+	private float mHalfwayRewindTime = 0f;
+	
 	void Awake()
 	{
 		MouseDrag mouseDrag = gameObject.AddComponent<MouseDrag>();
@@ -44,6 +49,9 @@ public class SteerWheelController : AIControllerBase
 	{
 		if( !EnableController ) return;
 		mHolding = true;
+		mRewindTime = 0;
+		mHalfwayRewindTime = 0;
+		mRewindAngle = 0;
 	}
 	
 	public void DragMove(DragMessage msg)
@@ -69,6 +77,7 @@ public class SteerWheelController : AIControllerBase
 		}
 		else {
 			mCurrentSpeed = turnAngle / msg.DeltaTime;
+			if( mCurrentSpeed > mMaxRotationSpeed ) mCurrentSpeed = mMaxRotationSpeed;
 		}
 		transform.rotation = transform.rotation * Quaternion.Euler( 0, 0, turnAngle );
 		mLastMessage = msg;
@@ -87,7 +96,6 @@ public class SteerWheelController : AIControllerBase
 			if((mLeavingSteerPositive && mCurrentSpeed > 0f ) ||
 				(!mLeavingSteerPositive && mCurrentSpeed < 0f )) {
 				float slowDown = mSlowAcc * Time.deltaTime;
-				Debug.Log("------------xxxxxxxxxx----------" + mCurrentSpeed);
 				Vector2 endPosition = mLastMessage.StartPosition;
 				endPosition.x += mCurrentSpeed * Time.deltaTime;;
 				mLastMessage.EndPosition = endPosition;
@@ -98,13 +106,45 @@ public class SteerWheelController : AIControllerBase
 					mCurrentSpeed -= slowDown;
 				else
 					mCurrentSpeed += slowDown;
-				if( Math.Abs(mCurrentSpeed) < slowDown) mCurrentSpeed = 0.0f;
+				if( Math.Abs(mCurrentSpeed) <= slowDown) mCurrentSpeed = 0.0f;
 			}
-			else if( mTotalAngle != 0f ){
-				
+			else if( mTotalAngle != 0f ){ // Speed is 0, so now rewind back to 0.
+				float turnAngle = 0f;
+				if( mRewindAngle == 0f ) { // Start to rewind.
+					mRewindTime = 0f;
+					mRewindAngle = mTotalAngle;
+					mRewindAcc = Mathf.Abs(mRewindAcc);
+					mHalfwayRewindTime = (float) Mathf.Abs(Mathf.Sqrt( Mathf.Abs(mTotalAngle / mRewindAcc)));
+					if( mTotalAngle < 0 ) mRewindAcc = -mRewindAcc;
+					
+				}
+				else { // Keep going.
+					mRewindTime += Time.deltaTime;
+					if( mRewindTime < mHalfwayRewindTime ) {
+						mTotalAngle = (mRewindAngle - mRewindAcc * mRewindTime * mRewindTime / 2) % 360f;
+						transform.rotation = transform.parent.rotation * Quaternion.Euler( 0f, 0f, mTotalAngle );
+					}
+					else if( mRewindTime < mHalfwayRewindTime * 2 ){
+						float restTime = mHalfwayRewindTime * 2 - mRewindTime;
+						mTotalAngle = (mRewindAcc * restTime * restTime / 2) % 360f;
+						transform.rotation = transform.parent.rotation * Quaternion.Euler( 0f, 0f, mTotalAngle );
+					}
+					else {
+						mTotalAngle = 0;
+						transform.rotation = transform.parent.rotation * Quaternion.Euler( 0f, 0f, 0f );
+						StopRewind();
+					}
+				}
 			}
 		}
     }
+	
+	private void StopRewind()
+	{
+		mRewindTime = 0;
+		mHalfwayRewindTime = 0;
+		mRewindAngle = 0;
+	}
    
 	/*protected override void OnFrameUpdate()
     {
