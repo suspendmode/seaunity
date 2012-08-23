@@ -120,6 +120,11 @@ public class ShipController : MonoBehaviour
 		mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * mStats.turningSpeed, 0f);
 		mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mSpeed * delta * mStats.movementSpeed);
 	}
+	
+	void SetSteerPower(float power)
+	{
+		mInput.x = -power;
+	}
 
 	/// <summary>
 	/// Update the input (used when ship is controlled by the player).
@@ -128,8 +133,8 @@ public class ShipController : MonoBehaviour
 	void UpdateInput ()
 	{
 		mInput.y = Mathf.Clamp01(Input.GetAxis("Vertical"));
-		mInput.x = Input.GetAxis("Horizontal");
-
+		//mInput.x = Input.GetAxis("Horizontal");
+	
 		// Fire the cannons
 		if (mCannons != null && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.JoystickButton0)))
 		{

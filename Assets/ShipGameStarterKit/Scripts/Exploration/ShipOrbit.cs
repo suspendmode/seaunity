@@ -36,9 +36,9 @@ public class ShipOrbit : MonoBehaviour
 			else
 			{
 				// Joystick input
-				mInput.x = Input.GetAxis("View X");
-				mInput.y = Input.GetAxis("View Y");
-				multiplier *= 75f;
+				//mInput.x = Input.GetAxis("View X");
+				//mInput.y = Input.GetAxis("View Y");
+				//multiplier *= 75f;
 			}
 
 			if (mouseInput || mInput.sqrMagnitude > 0.001f)
