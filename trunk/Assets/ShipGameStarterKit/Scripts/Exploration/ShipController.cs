@@ -23,7 +23,7 @@ public class ShipController : MonoBehaviour
 	Vector2 mInput = Vector2.zero;
 	Vector2 mSensitivity = new Vector2(6f, 1f);
 
-	float mSpeed = 0f;
+	float mForwardPower = 0f;
 	float mSteering = 0f;
 	float mTargetSpeed = 0f;
 	float mTargetSteering = 0f;
@@ -42,7 +42,7 @@ public class ShipController : MonoBehaviour
 	/// Current speed (0-1 range)
 	/// </summary>
 
-	public float speed { get { return mSpeed; } }
+	public float speed { get { return mForwardPower; } }
 
 	/// <summary>
 	/// Current steering value (-1 to 1 range)
@@ -101,7 +101,7 @@ public class ShipController : MonoBehaviour
 		}
 
 		// Being in shallow water immediately cancels forward-driving input
-		if (shallowWater) mInput.y = 0f;
+		if (shallowWater) mForwardPower = 0f;
 		float delta = Time.deltaTime;
 
 		// Slowly decay the speed and steering values over time and make sharp turns slow down the ship.
@@ -109,21 +109,27 @@ public class ShipController : MonoBehaviour
 		mTargetSteering = Mathf.Lerp(mTargetSteering, 0f, delta * 3f);
 
 		// Calculate the input-modified speed
-		mTargetSpeed = shallowWater ? 0f : Mathf.Clamp01(mTargetSpeed + delta * mSensitivity.y * mInput.y);
-		mSpeed = Mathf.Lerp(mSpeed, mTargetSpeed, Mathf.Clamp01(delta * (shallowWater ? 8f : 5f)));
+		mTargetSpeed = shallowWater ? 0f : Mathf.Clamp01(mTargetSpeed + delta * mSensitivity.y * mForwardPower);
+		mForwardPower = Mathf.Lerp(mForwardPower, mTargetSpeed, Mathf.Clamp01(delta * (shallowWater ? 8f : 5f)));
 
 		// Steering is affected by speed -- the slower the ship moves, the less maneuverable is the ship
-		mTargetSteering = Mathf.Clamp(mTargetSteering + delta * mSensitivity.x * mInput.x * (0.1f + 0.9f * mSpeed), -1f, 1f);
+		mTargetSteering = Mathf.Clamp(mTargetSteering + delta * mSensitivity.x * mInput.x * (0.1f + 0.9f * mForwardPower), -1f, 1f);
 		mSteering = Mathf.Lerp(mSteering, mTargetSteering, delta * 5f);
 
 		// Move the ship
 		mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * mStats.turningSpeed, 0f);
-		mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mSpeed * delta * mStats.movementSpeed);
+		mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mForwardPower * delta * mStats.movementSpeed);
 	}
 	
 	void SetSteerPower(float power)
 	{
 		mInput.x = -power;
+	}
+	
+	void SetForce(float power)
+	{
+		//mInput.y = speed;
+		mForwardPower = power;
 	}
 
 	/// <summary>
@@ -132,7 +138,7 @@ public class ShipController : MonoBehaviour
 
 	void UpdateInput ()
 	{
-		mInput.y = Mathf.Clamp01(Input.GetAxis("Vertical"));
+		//mInput.y = Mathf.Clamp01(Input.GetAxis("Vertical"));
 		//mInput.x = Input.GetAxis("Horizontal");
 	
 		// Fire the cannons
