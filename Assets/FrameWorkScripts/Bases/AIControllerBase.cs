@@ -12,7 +12,7 @@ using System.Collections;
 // AI module is the only one who controls actions under a game object.
 public class AIControllerBase : MonoBehaviour
 {
-	public bool EnableController = true;
+	public bool ControllerEnabled = true;
     
     public virtual void Init()
     {
@@ -20,11 +20,21 @@ public class AIControllerBase : MonoBehaviour
 
     void Update()
     {
-		if( EnableController ) OnFrameUpdate();
+		if( ControllerEnabled ) OnFrameUpdate();
     }
 
     protected virtual void OnFrameUpdate()
     {
     }
+	
+	public virtual void DisableController()
+	{
+		ControllerEnabled = false;
+	}
+	
+	public virtual void EnableController()
+	{
+		ControllerEnabled = true;
+	}
 }
 

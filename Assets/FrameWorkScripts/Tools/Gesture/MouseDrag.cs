@@ -40,7 +40,7 @@ public class MouseDrag : MonoBehaviour
                 {
                     mStartDrag = true;
                     mPositionRec = mousePos;
-                    MessageTarget.SendMessage("DragStart");
+                    GlobalMethods.SendMessage(MessageTarget, "DragStart");
                 }
             }
         }
@@ -59,8 +59,8 @@ public class MouseDrag : MonoBehaviour
                 mPositionRec = Vector2.zero;
                 if (MessageTarget != null)
                 {
-                    MessageTarget.SendMessage("DragMove", msg);
-                    MessageTarget.SendMessage("DragEnd");
+                    GlobalMethods.SendMessage(MessageTarget, "DragMove", msg);
+                    GlobalMethods.SendMessage(MessageTarget, "DragEnd");
                 }
             }
         }
@@ -78,7 +78,7 @@ public class MouseDrag : MonoBehaviour
                     msg.DeltaPosition = mousePos - mPositionRec;
                     msg.DeltaTime = Time.deltaTime;
                     mPositionRec = mousePos;
-                    if (MessageTarget != null) MessageTarget.SendMessage("DragMove", msg);
+                    if (MessageTarget != null) GlobalMethods.SendMessage(MessageTarget, "DragMove", msg);
                 }
             }
             else
@@ -93,8 +93,8 @@ public class MouseDrag : MonoBehaviour
                 mPositionRec = Vector2.zero;
                 if (MessageTarget != null)
                 {
-                    MessageTarget.SendMessage("DragMove", msg);
-                    MessageTarget.SendMessage("DragEnd");
+                    GlobalMethods.SendMessage(MessageTarget, "DragMove", msg);
+                    GlobalMethods.SendMessage(MessageTarget, "DragEnd");
                 }
             }
         }
