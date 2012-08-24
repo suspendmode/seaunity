@@ -6,9 +6,22 @@
 // Created on 18/7/2012 9:06:52 AM by Weili Zhi
 //============================================================================================================
 using UnityEngine;
-using System.Collections;
+using System;
 
-public class LevelData : GameData
+public class KeyBoardController : AIControllerBase
 {
-    public const string WelcomeEvent = "DisplayWelcome";
+	GameObject KeyPowerTarget = null;
+	void Start() {
+		if( KeyPowerTarget == null ) {
+			KeyPowerTarget = gameObject;
+		}
+	}
+	
+	protected override void OnFrameUpdate ()
+	{
+		if( KeyPowerTarget != null ) {
+			float x = Input.GetAxis("Horizontal");
+			GlobalMethods.SendMessage(KeyPowerTarget, "KeyBoardDrive", x);
+		}
+	}
 }

@@ -22,16 +22,17 @@ public class LevelController : AIControllerBase
 	}
 	void Start()
 	{
-		GlobalMethods.SendMessage(gameObject, mLevelData.WelcomeEvent);
+		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Sail, false); // Todo: temp
+		GlobalMethods.SendMessage(gameObject, LevelData.WelcomeEvent);
 	}
 	
 	void TryStrategyMode()
 	{
-		PlayerShip.SetActiveRecursively(false);
+		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Sail, false);
 	}
 	
 	void TryExplorationMode()
 	{
-		PlayerShip.SetActiveRecursively(true);
+		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Sail, true);
 	}
 }

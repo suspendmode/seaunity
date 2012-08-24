@@ -37,13 +37,14 @@ public class Config : MonoBehaviour
 	{
 		if (Instance == this) Instance = null;
 	}
-
+	
 	void Update ()
 	{
 		if (playerShip != null && Input.GetKeyDown(KeyCode.F5))
 		{
 			GameCamera.DetachFromParent(playerShip.transform);
-			playerShip.SetActiveRecursively(!playerShip.active);
+			GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Sail, false);
+			GlobalMethods.SendMessage(gameObject, LevelData.WelcomeEvent);
 		}
 	}
 
