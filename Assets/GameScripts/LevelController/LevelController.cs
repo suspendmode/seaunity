@@ -35,4 +35,9 @@ public class LevelController : AIControllerBase
 	{
 		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Sail, true);
 	}
+	
+	void TryBattleMode()
+	{
+		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Battle, true);
+	}
 }

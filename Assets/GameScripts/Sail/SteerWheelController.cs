@@ -192,4 +192,9 @@ public class SteerWheelController : AIControllerBase
 		if( mMouseDrag != null ) mMouseDrag.enabled = true;
 		if( mKeyboard != null ) mKeyboard.enabled = true;
 	}
+	
+	public void SetPowerTarget(GameObject target)
+	{
+		PowerTarget = target;
+	}
 }

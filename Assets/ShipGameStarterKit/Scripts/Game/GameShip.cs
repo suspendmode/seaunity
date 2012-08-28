@@ -14,7 +14,9 @@ public class GameShip : GameUnit
 
 	// Current and maximum sail health
 	public Vector2 sailHealth = new Vector2(100f, 100f);
-
+	
+	private GameObject mNextShip;
+	public GameObject NextShip { get { return mNextShip; }}
 	Vector3 mLastPos;
 	Vector3 mVelocity;
 

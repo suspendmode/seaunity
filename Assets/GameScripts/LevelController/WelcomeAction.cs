@@ -40,7 +40,13 @@ public class WelcomeAction : ActionBase
 					"At any time press F5 to switch between Strategy and Exploration modes.\n\n" +
 					"May this rough prototype help you with your own game ambitions!", skin.label);
 			}
-
+			
+			if (GUI.Button(new Rect(100f, rect.height - 120f, 200f, 30f), "Try Battle Mode", skin.button))
+			{
+				mShowMe = false;
+				GlobalMethods.SendMessage(gameObject, "TryBattleMode");
+			}
+			
 			if (GUI.Button(new Rect(100f, rect.height - 80f, 200f, 30f), "Try Strategy Mode", skin.button))
 			{
 				mShowMe = false;
