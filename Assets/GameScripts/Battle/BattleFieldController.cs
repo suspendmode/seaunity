@@ -48,9 +48,8 @@ public class BattleFieldController : AIControllerBase
 	private void PreparePlayerShips()
 	{
 		ShipCache cache = transform.GetComponent<ShipCache>();
-		// Load ship information
-		
-		
+		// Todo: Load ship information
+		// Todo: remove the following, construct fleet by data.
 		if( PlayerShip == null ) return;
 		mPlayerShip = GameObject.Instantiate(PlayerShip) as GameObject;
 		if( mPlayerShip != null ) {
@@ -59,6 +58,15 @@ public class BattleFieldController : AIControllerBase
 			mPlayerShip.transform.rotation = transform.rotation;
 			mPlayerShip.SetActiveRecursively(true);
 		}
+		Transform pirate = transform.FindChild("Pirate");
+		if( pirate != null) {
+			BattleAIController pirateController = pirate.GetComponent<BattleAIController>();
+			if( pirateController != null ) {
+				pirateController.SetPlayer(mPlayerShip);
+			}
+		}
+		
+		// Todo: find a better way to setup steer power target.
 		GameObject Steer = GameObject.Find("Steer");
 		if( Steer != null ) {
 			GlobalMethods.SendMessage(Steer, "SetPowerTarget", mPlayerShip);
