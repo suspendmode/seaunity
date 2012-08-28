@@ -38,22 +38,21 @@ public class BattleAIController : AIControllerBase
 	protected override void OnFrameUpdate()
     {
 		mCurrentForce = Mathf.Lerp(mCurrentForce, mCurrentForceTarget, 0.005f);
-		GlobalMethods.SendMessage(gameObject, "SetForce", mCurrentForce);
+		//GlobalMethods.SendMessage(gameObject, "SetForce", mCurrentForce);
     }
 	
 	protected override void OnLateFrameUpdate()
 	{
 		if( mPlayerShip == null ) return;
 		if( mTargetTransform == null )  return;
-		Vector3 distanceV3 = transform.position - mTargetTransform.position;
+		Vector3 distanceV3 = mTargetTransform.position - transform.position;
 		Vector3 forwardV3 = transform.forward;
 		distanceV3.y = 0f;
 		forwardV3.y = 0f;
 		float angle = Vector3.Angle(forwardV3, distanceV3);
-		if (AngleDir(forwardV3, distanceV3, Vector3.up) == -1)
-	        angle = 360 - angle;
+		angle = angle * AngleDir(forwardV3, distanceV3, Vector3.up);
 
-		GlobalMethods.SendMessage(gameObject, "SetSteerPower", angle / 360);
+		//GlobalMethods.SendMessage(gameObject, "SetSteerPower", angle / 360);
 		mCurrentForceTarget = 1f;
 	}
 	
@@ -61,12 +60,12 @@ public class BattleAIController : AIControllerBase
 	{
   		Vector3 perp = Vector3.Cross(fwd, targetDir);
 		float dir = Vector3.Dot(perp, up);
-	    if (dir > 0.0) {
-   		   return 1.0;
-		} else if (dir < 0.0) {
-	        return -1.0;
+	    if (dir > 0.0f) {
+   		   return 1.0f;
+		} else if (dir < 0.0f) {
+	        return -1.0f;
 	    } else {
-	        return 0.0;
+	        return 0.0f;
 	    }
 	}
 	
