@@ -6,6 +6,9 @@ public class ShipController : MonoBehaviour
 {
 	// Whether this ship is controlled by player input
 	public bool controlledByInput = false;
+	
+	public float PowerFactor = 0.3f;
+	public float SteerFactor = 3f;
 
 	/// <summary>
 	/// Raycast points used to determine if the ship has hit shallow water.
@@ -123,13 +126,13 @@ public class ShipController : MonoBehaviour
 	
 	void SetSteerPower(float power)
 	{
-		mInput.x = -power;
+		mInput.x = -power * SteerFactor;
 	}
 	
 	void SetForce(float power)
 	{
 		//mInput.y = speed;
-		mForwardPower = power;
+		mForwardPower = PowerFactor * power;
 	}
 
 	/// <summary>
