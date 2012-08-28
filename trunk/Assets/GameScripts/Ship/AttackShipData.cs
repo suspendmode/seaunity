@@ -13,7 +13,7 @@ public class AttackShipData
 {
 	private LinkedList<Transform> mTargets = new LinkedList<Transform>();
 	
-	private void FillShipTargetPosition(GameObject ship)
+	public void FillTargetPositions(GameObject ship)
 	{
 		Transform targets = ship.transform.Find("AttackPoints");
 		if( targets!= null ) {
@@ -34,7 +34,7 @@ public class AttackShipData
 				GameObject nextShip = script.NextShip;
 				if( nextShip != null )
 				{
-					FillShipTargetPosition(nextShip);
+					FillTargetPositions(nextShip);
 				}
 				else {
 					tfNext = targets.Find("AttackPointT");
@@ -54,6 +54,10 @@ public class AttackShipData
 			}
 			return;
 		}
+	}
+	public LinkedList<Transform> GetAllTargetPositions()
+	{
+		return mTargets;
 	}
 }
 
