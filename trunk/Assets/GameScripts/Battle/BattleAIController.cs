@@ -50,8 +50,24 @@ public class BattleAIController : AIControllerBase
 		distanceV3.y = 0f;
 		forwardV3.y = 0f;
 		float angle = Vector3.Angle(forwardV3, distanceV3);
+		if (AngleDir(forwardV3, distanceV3, Vector3.up) == -1)
+	        angle = 360 - angle;
+
 		GlobalMethods.SendMessage(gameObject, "SetSteerPower", angle / 360);
 		mCurrentForceTarget = 1f;
+	}
+	
+	private float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)
+	{
+  		Vector3 perp = Vector3.Cross(fwd, targetDir);
+		float dir = Vector3.Dot(perp, up);
+	    if (dir > 0.0) {
+   		   return 1.0;
+		} else if (dir < 0.0) {
+	        return -1.0;
+	    } else {
+	        return 0.0;
+	    }
 	}
 	
 	private Transform GetTargetPosition(AttackShipData data)
