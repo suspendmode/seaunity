@@ -41,10 +41,17 @@ public class BattleAIController : AIControllerBase
 		GlobalMethods.SendMessage(gameObject, "SetForce", mCurrentForce);
     }
 	
+	private float mInterval = 0f;
 	protected override void OnLateFrameUpdate()
 	{
 		if( mPlayerShip == null ) return;
 		if( mTargetTransform == null )  return;
+		mInterval += Time.deltaTime;
+		if( mInterval > 1f ) {
+			mTargetTransform = GetTargetPosition(mAttackShipData);
+			mInterval = 0f;
+		}
+		
 		Vector3 distanceV3 = mTargetTransform.position - transform.position;
 		Vector3 forwardV3 = transform.forward;
 		distanceV3.y = 0f;
