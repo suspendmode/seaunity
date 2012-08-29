@@ -59,5 +59,33 @@ public class AttackShipData
 	{
 		return mTargets;
 	}
+	
+	public Transform GetPreviousTarget(Transform currentTarget)
+	{
+		LinkedListNode<Transform> node = mTargets.Find(currentTarget);
+		if( node != null ) {
+			if( node.Previous == null ) {
+				return mTargets.Last.Value;
+			}
+			else {
+				return node.Previous.Value;
+			}
+		}
+		else return null;
+	}
+	
+	public Transform GetNextTarget(Transform currentTarget)
+	{
+		LinkedListNode<Transform> node = mTargets.Find(currentTarget);
+		if( node != null ) {
+			if( node.Next == null ) {
+				return mTargets.First.Value;
+			}
+			else {
+				return node.Next.Value;
+			}
+		}
+		else return null;
+	}
 }
 

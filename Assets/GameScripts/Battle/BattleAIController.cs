@@ -42,25 +42,49 @@ public class BattleAIController : AIControllerBase
     }
 	
 	private float mInterval = 0f;
+	private Transform mMuteTarget = null;
 	protected override void OnLateFrameUpdate()
 	{
 		if( mPlayerShip == null ) return;
 		if( mTargetTransform == null )  return;
 		mInterval += Time.deltaTime;
 		if( mInterval > 1f ) {
-			mTargetTransform = GetTargetPosition(mAttackShipData);
+			Transform nearestTarget = GetTargetPosition(mAttackShipData);
+			if( nearestTarget != mMuteTarget ) {
+				mTargetTransform = nearestTarget;
+			}
 			mInterval = 0f;
 		}
-		
-		Vector3 distanceV3 = mTargetTransform.position - transform.position;
+		float distanceToArrive = (mTargetTransform.position - transform.position).magnitude;
+		float angleToTurn = 0f;
+		Debug.Log("----xxxxxxxxxx--------" + mTargetTransform.name + " " + distanceToArrive);
+		//float angleToTurn = CalculateAngle(mTargetTransform.position);
+		//if( angleToTurn > 80f && distanceToArrive < 5f) {
+		if( distanceToArrive < 5f) {
+			mMuteTarget = mTargetTransform;
+			angleToTurn = CalculateAngle(mTargetTransform.parent.position);
+			if( angleToTurn > 0 ) {
+				mTargetTransform = mAttackShipData.GetPreviousTarget(mTargetTransform);
+			}
+			else mTargetTransform = mAttackShipData.GetNextTarget(mTargetTransform);
+			angleToTurn = CalculateAngle(mTargetTransform.position);
+		}
+		else {
+			angleToTurn = CalculateAngle(mTargetTransform.position);
+		}
+		GlobalMethods.SendMessage(gameObject, "SetSteerPower", angleToTurn / 360);
+		mCurrentForceTarget = 1f;
+	}
+	
+	private float CalculateAngle(Vector3 target)
+	{
+		Vector3 distanceV3 = target - transform.position;
 		Vector3 forwardV3 = transform.forward;
 		distanceV3.y = 0f;
 		forwardV3.y = 0f;
 		float angle = Vector3.Angle(forwardV3, distanceV3);
 		angle = angle * AngleDir(forwardV3, distanceV3, Vector3.up);
-
-		GlobalMethods.SendMessage(gameObject, "SetSteerPower", angle / 360);
-		mCurrentForceTarget = 1f;
+		return angle;
 	}
 	
 	private float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)

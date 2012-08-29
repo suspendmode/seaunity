@@ -22,7 +22,13 @@ public class SailCameraController : AIControllerBase
 	public override void EnableController()
 	{
 		base.EnableController();
-		BroadcastMessage("EnableController",SendMessageOptions.DontRequireReceiver);
+		Transform tf = transform.FindChild("Steer");
+		if( tf != null )
+		{
+			if( tf.gameObject != null ) {
+				GlobalMethods.SendMessage(tf.gameObject, "EnableController");
+			}
+		}
 		Camera camera = gameObject.GetComponent<Camera>();
 		camera.enabled = true;
 	}
