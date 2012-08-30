@@ -11,10 +11,7 @@ using System.Collections.Generic;
 
 public class BattleAIController : AIControllerBase
 {
-	public float ForwardPower;
-	public float SteerPower;
-	
-	public float MiniPassRange = 0.01f;
+	public float MiniPassRange = 0.005f;
 	
 	private GameObject mPlayerShip = null;
 	private Transform mTargetTransform = null;
@@ -37,7 +34,7 @@ public class BattleAIController : AIControllerBase
 	
 	protected override void OnFrameUpdate()
     {
-		mCurrentForce = Mathf.Lerp(mCurrentForce, mCurrentForceTarget, 0.005f);
+		mCurrentForce = Mathf.Lerp(mCurrentForce, mCurrentForceTarget, MiniPassRange);
 		GlobalMethods.SendMessage(gameObject, "SetForce", mCurrentForce);
     }
 	
@@ -57,7 +54,6 @@ public class BattleAIController : AIControllerBase
 		}
 		float distanceToArrive = (mTargetTransform.position - transform.position).magnitude;
 		float angleToTurn = 0f;
-		Debug.Log("----xxxxxxxxxx--------" + mTargetTransform.name + " " + distanceToArrive);
 		//float angleToTurn = CalculateAngle(mTargetTransform.position);
 		//if( angleToTurn > 80f && distanceToArrive < 5f) {
 		if( distanceToArrive < 5f) {
