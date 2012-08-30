@@ -27,6 +27,7 @@ public class MyGUITest
         AttachMyGUIBehavior();
         GUITest myGUI = new GUITest();
         myGUI.AddGUICall(DrawWindow2, MyGUI.GUICallPriority.top);
+        myGUI.AddGUICall(DrawGrids, MyGUI.GUICallPriority.top);
         myGUI.AddGUICall(DrawWindow3, MyGUI.GUICallPriority.top);
         myGUI.AddGUICall(DrawWindow4, MyGUI.GUICallPriority.top);
         myGUI.AddGUICall(myGUI.DrawWindow, MyGUI.GUICallPriority.background);
@@ -70,19 +71,41 @@ public class MyGUITest
         }
     }
 
+    private static Rect window2 = new Rect(Screen.width * 0.5f - 100f, Screen.height * 0.5f - 120f, 300f, 240f);
+    private static Rect window3 = new Rect(Screen.width * 0.5f + 100f, Screen.height * 0.5f + 120f, 150f, 150f);
+    private static Rect window4 = new Rect(10f, 10f, 190f, 190f);
+    private static Rect window5 = new Rect();
+
     public static void DrawWindow2()
     {
-        UI.DrawWindow(new Rect(Screen.width * 0.5f - 100f, Screen.height * 0.5f - 120f, 200f, 240f), "Hao DrawWindow2");
+        UI.DrawWindow(window2, "DrawWindow2");
     }
 
     public static void DrawWindow3()
     {
-        UI.DrawWindow(new Rect(Screen.width * 0.5f + 100f, Screen.height * 0.5f + 120f, 150f, 150f), "Hao DrawWindow3");
+        UI.DrawWindow(window3, "Hao DrawWindow3");
     }
 
     public static void DrawWindow4()
     {
-        UI.DrawWindow(new Rect(10f, 10f, 190f, 190f), "Hao DrawWindow4");
+        UI.DrawWindow(window4, "Hao DrawWindow4");
+    }
+
+    public static void DrawGrids()
+    {
+        Debug.Log("----? draw grids??");
+        // Draw the resource grid
+        //List<Vector2> grid = UI.DrawGrid(window2, 50f, 50f, 4f, 4f, 4f, 8);
+        Rect rect = window2;//new Rect(window2.x + 3, window2.height + 3, window2.width - 6, window2.height - 6);
+        rect.x += 6;
+        rect.y += 6;
+        rect.width -= 8;
+        rect.height -= 8;
+        
+        GUI.Box(rect, "", MyGUIBehavior.Instance.skin.button);
+
+        //List<Rect> rectGrids = UIExtension.DrawAutoGrids(rect, 50f, 30f);
+        List<Rect> rectGrids = UIExtension.DrawAutoGrids(rect, 60f, 60f);
     }
 }
 
