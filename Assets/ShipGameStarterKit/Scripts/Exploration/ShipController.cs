@@ -121,7 +121,9 @@ public class ShipController : MonoBehaviour
 
 		// Move the ship
 		mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * mStats.turningSpeed, 0f);
-		mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mForwardPower * delta * mStats.movementSpeed);
+		Vector3 newPos = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mForwardPower * delta * mStats.movementSpeed);
+		newPos.y = mTrans.localPosition.y;
+		mTrans.localPosition = newPos;
 	}
 	
 	void SetSteerPower(float power)
