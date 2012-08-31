@@ -193,7 +193,7 @@ public class SteerWheelController : AIControllerBase
 		if( mKeyboard != null ) mKeyboard.enabled = true;
 	}
 	
-	public void SetPowerTarget(GameObject target)
+	public void SetForceTarget(GameObject target)
 	{
 		PowerTarget = target;
 	}

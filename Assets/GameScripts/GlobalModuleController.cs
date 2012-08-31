@@ -22,37 +22,69 @@ public class GlobalModuleController : AIControllerBase
 	{
 		mControllerGameObject = gameObject;
 	}
+	
+	public void Map(bool enable)
+	{
+		// Map mode needs Camark to decide.
+		EnableSail(false);
+		EnableBattle(false);
+	}
+	
 	public void Sail(bool enable)
 	{
-		if( enable ) {
-			foreach( GameObject go in SailModule)
-			{
-				go.SetActiveRecursively(true);
-				//GlobalMethods.SendMessage( go, "EnableController");
-			}
+		if( enabled) {
+			EnableBattle(false);
+			EnableSail(true);
 		}
 		else {
-			foreach( GameObject go in SailModule)
-			{
-				go.SetActiveRecursively(false);
-				//GlobalMethods.SendMessage( go, "DisableController");
-			}
+			EnableSail(false);
+			EnableBattle(true);
 		}
 	}
 	
 	public void Battle(bool enable)
 	{
+		if( enabled) {
+			EnableSail(false);
+			EnableBattle(true);
+		}
+		else {
+			EnableBattle(false);
+			EnableSail(true);
+		}
+	}
+	
+	private void EnableSail(bool enable)
+	{
+		if( enable ) {
+			foreach( GameObject go in SailModule)
+			{
+				//go.SetActiveRecursively(true);
+				GlobalMethods.SendMessage( go, "EnableController");
+			}
+		}
+		else {
+			foreach( GameObject go in SailModule)
+			{
+				//go.SetActiveRecursively(false);
+				GlobalMethods.SendMessage( go, "DisableController");
+			}
+		}
+	}
+	
+	private void EnableBattle(bool enable)
+	{
 		if( enable ) {
 			foreach( GameObject go in BattleModule)
 			{
-				go.SetActiveRecursively(true);
+				//go.SetActiveRecursively(true);
 				GlobalMethods.SendMessage( go, "EnableController");
 			}
 		}
 		else {
 			foreach( GameObject go in BattleModule)
 			{
-				go.SetActiveRecursively(false);
+				//go.SetActiveRecursively(false);
 				GlobalMethods.SendMessage( go, "DisableController");
 			}
 		}
