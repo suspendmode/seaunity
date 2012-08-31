@@ -32,7 +32,7 @@ public class BattleFieldController : AIControllerBase
 		PreparePlayerShips();
 		GameObject Steer = GameObject.Find("Steer");
 		if( Steer != null ) {
-			GlobalMethods.SendMessage(Steer, "SetPowerTarget", mPlayerShip);
+			GlobalMethods.SendMessage(Steer, "SetForceTarget", mPlayerShip);
 		}
 	}
 	
@@ -42,7 +42,7 @@ public class BattleFieldController : AIControllerBase
 		GameObject.Destroy(mPlayerShip);
 		GameObject Steer = GameObject.Find("Steer");
 		if( Steer != null ) {
-			GlobalMethods.SendMessage(Steer, "SetPowerTarget", PlayerShip);
+			GlobalMethods.SendMessage(Steer, "SetForceTarget", PlayerShip);
 		}
 	}
 	private void PreparePlayerShips()

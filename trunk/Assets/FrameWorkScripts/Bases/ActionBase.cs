@@ -10,14 +10,24 @@ using System.Collections;
 
 public class ActionBase : MonoBehaviour
 {
-	public bool EnableAction = true;
+	private bool mEnableAction = true;
     public virtual void Init()
     {
     }
 	
+	public virtual void EnableAction()
+	{
+		mEnableAction = true;
+	}
+
+	public virtual void DisableAction()
+	{
+		mEnableAction = false;
+	}
+
 	void Update()
     {
-		if( EnableAction ) OnFrameUpdate();
+		if( mEnableAction ) OnFrameUpdate();
     }
 
     protected virtual void OnFrameUpdate()

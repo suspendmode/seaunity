@@ -13,7 +13,7 @@ public class SailforceController : AIControllerBase
 	// Data
 	public float ForceChangeStep = 0.33f;
 	public float StepCount = 4f;
-	public GameObject ControlTarget = null;
+	public GameObject ForceTarget;
 	
 	private float mCurrentForceTarget;
 	private float mMaxForce;
@@ -24,17 +24,23 @@ public class SailforceController : AIControllerBase
 	{
 		mMaxForce = ForceChangeStep * StepCount;
 		mCurrentForceTarget = 0f;
-		mUIAction = gameObject.AddComponent<SailforceUIAction>();
+		mUIAction = gameObject.GetComponent<SailforceUIAction>();
+		if( mUIAction == null ) 
+			mUIAction = gameObject.AddComponent<SailforceUIAction>();
 		mUIAction.mForeChangeCB = ForceChangeCallback;
-		if( ControlTarget == null ) {
-			ControlTarget = gameObject;
-		}
+	}
+	
+	void SetForceTarget(GameObject target)
+	{
+		ForceTarget = target;
 	}
 	
 	protected override void OnFrameUpdate()
     {
 		mCurrentForce = Mathf.Lerp(mCurrentForce, mCurrentForceTarget, 0.005f);
-		GlobalMethods.SendMessage(ControlTarget, "SetForce", mCurrentForce);
+		if( ForceTarget != null ) {
+			GlobalMethods.SendMessage(ForceTarget, "SetForce", mCurrentForce);
+		}
     }
 	
 	private void ForceChangeCallback()
@@ -46,13 +52,13 @@ public class SailforceController : AIControllerBase
 	public override void DisableController()
 	{
 		base.DisableController();
-		if(mUIAction != null) mUIAction.enabled = false;
+		if(mUIAction != null) mUIAction.EnableAction();
 	}
 	
 	public override void EnableController()
 	{
 		base.EnableController();
-		if(mUIAction != null) mUIAction.enabled = true;
+		if(mUIAction != null) mUIAction.DisableAction();
 	}
 }
 

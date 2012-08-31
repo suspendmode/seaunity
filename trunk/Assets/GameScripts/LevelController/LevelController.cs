@@ -22,13 +22,13 @@ public class LevelController : AIControllerBase
 	}
 	void Start()
 	{
-		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Sail, false); // Todo: temp
+		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Map, false); // Todo: temp
 		GlobalMethods.SendMessage(gameObject, LevelData.WelcomeEvent);
 	}
 	
 	void TryStrategyMode()
 	{
-		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Sail, false);
+		GlobalMethods.SendMessage(GlobalModuleController.MessageTarget, ModuleNames.Map, false);
 	}
 	
 	void TryExplorationMode()
