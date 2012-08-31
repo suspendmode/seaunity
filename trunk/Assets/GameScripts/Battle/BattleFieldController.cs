@@ -47,7 +47,6 @@ public class BattleFieldController : AIControllerBase
 			mPlayerShip.transform.parent = transform;
 			mPlayerShip.transform.localPosition = Vector3.zero;
 			mPlayerShip.transform.rotation = transform.rotation;
-			mPlayerShip.SetActiveRecursively(true);
 		}
 		Transform pirate = transform.FindChild("Pirate");
 		if( pirate != null) {

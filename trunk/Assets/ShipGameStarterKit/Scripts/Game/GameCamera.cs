@@ -10,7 +10,7 @@ public class GameCamera : MonoBehaviour
 	static public Vector3 direction = Vector3.forward;
 	static public Vector3 flatDirection = Vector3.forward;
 
-	public float interpolationTime = 0.25f;
+	public float interpolationTime = 0f;
 
 	Transform mTrans;
 	Vector3 mPos;
@@ -92,7 +92,6 @@ public class GameCamera : MonoBehaviour
 	/// </summary>
 
 	void Awake () { mInstance = this; }
-	void OnDestroy () { mInstance = null; }
 
 	/// <summary>
 	/// Cache the transform.
@@ -146,5 +145,10 @@ public class GameCamera : MonoBehaviour
 		flatDirection = direction;
 		flatDirection.y = 0f;
 		flatDirection.Normalize();
+	}
+	
+	void OnDestroy()
+	{
+		mInstance = null;
 	}
 }

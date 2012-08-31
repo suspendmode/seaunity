@@ -32,6 +32,7 @@ public class GlobalModuleController : AIControllerBase
 	
 	public void Sail(bool enable)
 	{
+		GameCamera.DetachFromParent();
 		if( enabled) {
 			EnableBattle(false);
 			EnableSail(true);
@@ -44,6 +45,7 @@ public class GlobalModuleController : AIControllerBase
 	
 	public void Battle(bool enable)
 	{
+		GameCamera.DetachFromParent();
 		if( enabled) {
 			EnableSail(false);
 			EnableBattle(true);
