@@ -2,7 +2,7 @@
 
 [RequireComponent(typeof(GameShip))]
 [AddComponentMenu("Exploration/Ship Controller")]
-public class ShipController : MonoBehaviour
+public class ShipController : AIControllerBase
 {
 	// Whether this ship is controlled by player input
 	public bool controlledByInput = false;
@@ -83,7 +83,7 @@ public class ShipController : MonoBehaviour
 	/// Update the input values, calculate the speed and steering, and move the transform.
 	/// </summary>
 
-	void Update ()
+	protected override void OnFrameUpdate ()
 	{
 		// Update the input values if controlled by the player
 		if (controlledByInput) UpdateInput();

@@ -25,6 +25,8 @@ public class BattleFieldController : AIControllerBase
 		if( Steer != null ) {
 			GlobalMethods.SendMessage(Steer, "SetForceTarget", mPlayerShip);
 		}
+		if( mPlayerShip != null )
+			GlobalMethods.SendMessage(mPlayerShip, "EnableController", mPlayerShip);
 	}
 	
 	public override void DisableController ()
@@ -35,6 +37,8 @@ public class BattleFieldController : AIControllerBase
 		if( Steer != null ) {
 			GlobalMethods.SendMessage(Steer, "SetForceTarget", PlayerShip);
 		}
+		if( mPlayerShip != null )
+			GlobalMethods.SendMessage(mPlayerShip, "DisableController", mPlayerShip);
 	}
 	private void PreparePlayerShips()
 	{
