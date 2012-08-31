@@ -17,15 +17,6 @@ public class BattleFieldController : AIControllerBase
 	public GameObject PlayerShip;
 	private GameObject mPlayerShip;
 	
-	void OnDisable()
-	{
-		GameObject.Destroy(mPlayerShip);
-		GameObject Steer = GameObject.Find("Steer");
-		if( Steer != null ) {
-			GlobalMethods.SendMessage(Steer, "SetPowerTarget", PlayerShip);
-		}
-	}
-	
 	public override void EnableController ()
 	{
 		base.EnableController ();
@@ -64,12 +55,6 @@ public class BattleFieldController : AIControllerBase
 			if( pirateController != null ) {
 				pirateController.SetPlayer(mPlayerShip);
 			}
-		}
-		
-		// Todo: find a better way to setup steer power target.
-		GameObject Steer = GameObject.Find("Steer");
-		if( Steer != null ) {
-			GlobalMethods.SendMessage(Steer, "SetPowerTarget", mPlayerShip);
 		}
 	}
 }
