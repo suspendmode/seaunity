@@ -86,6 +86,15 @@ static public class Tools
 	}
 	
 	/// <summary>
+	/// Calculates an angle between to Vectors.
+	/// </summary>
+	static public float Angle (Vector3 v1, Vector3 v2)
+	{
+	    int sign = Vector3.Cross(v1, v2).y > 0 ? -1 : 1;
+	    return sign * Vector3.Angle(v1,v2);
+	}
+	
+	/// <summary>
 	/// Helper function that encodes a floating-point value into an integer.
 	/// This is done this way because -1 is 0xFFFFFFFF in bits, which can't be bitwise-OR'd with anything afterwards.
 	/// Encoding -1 as 0x11, with the least-important bit containing the sign, on the other hand, works perfectly fine.

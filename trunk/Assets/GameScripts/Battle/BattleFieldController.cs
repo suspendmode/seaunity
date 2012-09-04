@@ -51,6 +51,20 @@ public class BattleFieldController : AIControllerBase
 			mPlayerShip.transform.parent = transform;
 			mPlayerShip.transform.localPosition = Vector3.zero;
 			mPlayerShip.transform.rotation = transform.rotation;
+			Transform tf = mPlayerShip.transform.FindChild("Camera Node");
+			if( tf != null ) {
+				tf = tf.FindChild("LookAt");
+				if( tf != null ) {
+					ShipOrbit shipOrbit = tf.GetComponent<ShipOrbit>();
+					if( shipOrbit != null ) {
+						shipOrbit.enabled = false;
+					}
+					BattleShipOrbit battleOrbit = tf.GetComponent<BattleShipOrbit>();
+					if( battleOrbit == null ) battleOrbit = tf.gameObject.AddComponent<BattleShipOrbit>();
+					if( shipOrbit != null ) battleOrbit.control = shipOrbit.control;
+					battleOrbit.enabled = true;
+				}
+			}
 		}
 		Transform pirate = transform.FindChild("Pirate");
 		if( pirate != null) {
