@@ -65,7 +65,6 @@ public class SteerWheelController : AIControllerBase
 	public void DragMove(DragMessage msg)
     {
 		if( !ControllerEnabled ) return;
-		float origineZ = transform.eulerAngles.z;
 		float turnAngle = - msg.DeltaPosition.x;
 		if( msg.StartPosition.x < - mCenter.x ) {
 			turnAngle -= msg.DeltaPosition.y;
@@ -100,7 +99,6 @@ public class SteerWheelController : AIControllerBase
 	
 	void KeyBoardDrive(float x)
 	{
-		float slowDown = SlowAcc * Time.deltaTime;
 		if( mLastMessage == null ) {
 			mLastMessage = new DragMessage();
 			mLastMessage.StartPosition = Vector2.zero;
@@ -133,7 +131,6 @@ public class SteerWheelController : AIControllerBase
 				if( Math.Abs(mCurrentSpeed) <= slowDown) mCurrentSpeed = 0.0f;
 			}
 			else if( AllowRewind && mTotalAngle != 0f ){ // Speed is 0, so now rewind back to 0.
-				float turnAngle = 0f;
 				if( mRewindAngle == 0f ) { // Start to rewind.
 					mRewindTime = 0f;
 					mRewindAngle = mTotalAngle;

@@ -4,8 +4,16 @@ using System.Collections.Generic;
 [AddComponentMenu("Game/Unit")]
 public class GameUnit : MonoBehaviour
 {
+	public enum UnitType {
+		Business,
+		Pirate,
+		RoyalNavy
+	}
 	// List of all in-game units
-	static List<GameUnit> mList = new List<GameUnit>();
+	static List<GameUnit> mList;
+	static Dictionary<UnitType, List<GameUnit>> mAllListDict = new Dictionary<UnitType, List<GameUnit>>();
+	
+	public UnitType MyType;
 
 	// Animation to trigger when the unit gets destroyed
 	public Animation destroyAnimation;
@@ -44,16 +52,20 @@ public class GameUnit : MonoBehaviour
 	/// Find the unit that's easiest to aim at given the specified direction.
 	/// </summary>
 
-	static public GameUnit Find (GameUnit myUnit, Vector3 dir, float maxRange, float maxAngle)
+	static public GameUnit Find (GameUnit myUnit, Vector3 dir, float maxRange, float maxAngle, UnitType [] enemyType)
 	{
 		GameUnit bestUnit = null;
 
 		if (myUnit != null)
 		{
 			float bestValue = 0f;
-			Vector3 pos = myUnit.mTrans.position;
-
-			foreach (GameUnit unit in mList)
+			Vector3 pos = myUnit.transform.position;
+			List<GameUnit> list = new List<GameUnit>();
+			foreach(UnitType type in enemyType)
+			{
+				list.AddRange(mAllListDict[type]);
+			}
+			foreach (GameUnit unit in list)
 			{
 				if (unit == myUnit || unit == null || unit.mTrans == null) continue;
 
@@ -84,6 +96,41 @@ public class GameUnit : MonoBehaviour
 		}
 		return bestUnit;
 	}
+	
+	/// <summary>
+	/// Find the closest enemy unit.
+	/// </summary>
+
+	static public GameUnit Find (GameUnit myUnit, float maxRange, UnitType [] types)
+	{
+		GameUnit bestUnit = null;
+
+		if (myUnit != null)
+		{
+			Vector3 pos = myUnit.transform.position;
+			List<GameUnit> list = new List<GameUnit>();
+			foreach(UnitType type in types)
+			{
+				list.AddRange(mAllListDict[type]);
+			}
+			float closest = float.MaxValue;
+			foreach (GameUnit unit in list)
+			{
+				if (unit == myUnit || unit == null || unit.mTrans == null) continue;
+
+				// If the unit is too far, move on to the next
+				Vector3 unitDir = unit.mTrans.position - pos;
+				float distance = unitDir.magnitude;
+				if (distance > maxRange || distance < 0.01f) continue;
+
+				if( distance < closest ) {
+					closest = distance;
+					bestUnit = unit;
+				}
+			}
+		}
+		return bestUnit;
+	}
 
 	/// <summary>
 	/// Add this unit to the list of in-game units.
@@ -96,10 +143,22 @@ public class GameUnit : MonoBehaviour
 	/// </summary>
 
 	void OnDisable () { mList.Remove(this); }
-
+	
+	void Awake()
+	{
+		if( mAllListDict.ContainsKey(MyType)) {
+			mList = mAllListDict[MyType];
+		}
+		else {
+			mList = new List<GameUnit>();
+			mAllListDict.Add(MyType, mList);
+		}
+	}
+	
 	/// <summary>
 	/// Remember all colliders belonging to this unit.
 	/// </summary>
+	/// 
 
 	void Start ()
 	{

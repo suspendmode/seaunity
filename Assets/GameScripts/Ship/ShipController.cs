@@ -9,6 +9,7 @@ public class ShipController : AIControllerBase
 	
 	public float PowerFactor = 0.3f;
 	public float SteerFactor = 3f;
+	public GameUnit.UnitType [] EnemyType;
 
 	/// <summary>
 	/// Raycast points used to determine if the ship has hit shallow water.
@@ -181,7 +182,7 @@ public class ShipController : AIControllerBase
 	void AimAndFire (Vector3 dir, float maxRange, bool forceFire)
 	{
 		float distance = maxRange * 1.2f;
-		GameUnit gu = GameUnit.Find(mStats, dir, distance, 60f);
+		GameUnit gu = GameUnit.Find(mStats, dir, distance, 60f, EnemyType);
 
 		// If a unit was found, override the direction and angle
 		if (gu != null)
