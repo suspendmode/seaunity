@@ -33,6 +33,8 @@ public class MyGUITest
         myGUI.AddGUICall(myGUI.DrawWindow, MyGUI.GUICallPriority.background);
 
         MyGUIBehavior.Instance.AddMyGUI(layerID++, myGUI);
+
+        myGUI.AddGUICall(myGUI.PrintFPS, MyGUI.GUICallPriority.top);
     }
     
     [MenuItem("Debug/RemoveGUITest")]
@@ -118,5 +120,10 @@ public class GUITest : MyGUI
     {
         Debug.Log("Hao Test  --------> DrawWindow()");
         Rect rect = UI.DrawWindow(new Rect(Screen.width * 0.5f - 200f, Screen.height * 0.5f - 220f, 400f, 440f), "Hao TTTTT");
+    }
+
+    public void PrintFPS()
+    {
+        UIExtension.PrintFPS(new Rect(Screen.width - 55f, 10f, 45f, 60f), 30);
     }
 }
